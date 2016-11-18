@@ -7,4 +7,5 @@ import android.view.View;
  */
 public interface CardViewHolderInterface {
     public void showPopupMenuProfile(View view);
+    public void addNewItem();
 }

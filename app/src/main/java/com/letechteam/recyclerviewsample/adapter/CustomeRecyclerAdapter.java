@@ -98,6 +98,12 @@ public class CustomeRecyclerAdapter extends RecyclerView.Adapter<CustomeRecycler
                     mainActivity.showImageView(getAdapterPosition());
                 }
             });
+            myCardViewHolder.getAct_btn_like().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mainActivity.addNewItem();
+                }
+            });
         }
     }
 

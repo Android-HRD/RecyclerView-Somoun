@@ -38,12 +38,12 @@ public class MainActivity extends AppCompatActivity implements CardViewHolderInt
     private PopupMenu popupMenuPro;
 
     //private ArrayList<Contact> contactList;
-    private int i;
+    private int i = 1;
     private int page = 1;
-    private int num = 20;
-    private int itemPerPage = 20;
+    private int num = 50;
+    private int itemPerPage = 1;
     private boolean loading;
-    //private MyAdapter adapter;
+    private CustomeRecyclerAdapter  adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +59,14 @@ public class MainActivity extends AppCompatActivity implements CardViewHolderInt
         Integer icons[] = {R.drawable.comment24, android.support.v7.appcompat.R.drawable.abc_ic_star_black_36dp, R.drawable.like24};
         listView.setAdapter(new CustomArrayListAdapter(this, R.layout.list_item, itemName, icons));*/
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_list);
-        final CustomeRecyclerAdapter adapter = new CustomeRecyclerAdapter();
+        adapter = new CustomeRecyclerAdapter();
         adapter.setMainActivity(this);
         userDatasource = generateUserItem();
         adapter.setUserPro(userDatasource);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager l_re = new LinearLayoutManager(this);
+/*        l_re.setReverseLayout(true);
+        l_re.setStackFromEnd(true);*/
+        mRecyclerView.setLayoutManager(l_re);
         View popupLayout = getLayoutInflater().inflate(R.layout.popup_image,null,false);
         popupImageHolder = new PopupImageHolder(popupLayout, ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT,true);
         //mRecyclerView.setItemAnimator(RecyclerView.ItemAnimator.FLAG_APPEARED_IN_PRE_LAYOUT);
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements CardViewHolderInt
         mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
         mRecyclerView.setAdapter(animateAdapter);
 
-        Paginate.Callbacks callbacks = new Paginate.Callbacks() {
+        /*Paginate.Callbacks callbacks = new Paginate.Callbacks() {
             @Override
             public void onLoadMore() {
                 loading = true;
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements CardViewHolderInt
                         while (i <= num){
                             userDatasource.add(new UserProfile(R.drawable.usericon,"Som Oun" + i, "time : " + i, "today i'm stopid very stoped : " + i, R.drawable.img3, R.drawable.ic_thumb_up_black_18dp, "You and " + i + " friends liked", "1 commented and 2 shared"));
                             adapter.notifyItemInserted(userDatasource.size() - 1);
+                           // mRecyclerView.scrollToPosition(userDatasource.size()-2);
                             i++;
                         }
                         loading = false;
@@ -100,21 +104,21 @@ public class MainActivity extends AppCompatActivity implements CardViewHolderInt
 
             @Override
             public boolean hasLoadedAllItems() {
-                return page == 5;
+                return page == 2;
             }
         };
 
         Paginate.with(mRecyclerView, callbacks)
-                .setLoadingTriggerThreshold(5)
+                .setLoadingTriggerThreshold(2)
                 .addLoadingListItem(true)
-                .build();
+                .build();*/
      //   mRecyclerView.setAdapter(adapter);
     }
 
     private ArrayList<UserProfile> generateUserItem(){
         ArrayList<UserProfile> user = new ArrayList<>();
         int pic;
-        for (int i = 0; i < 50; i++){
+        for (int i = 0; i < 1; i++){
             if((i % 2) == 0){
                pic = R.drawable.picture1;
             }else {
@@ -129,6 +133,14 @@ public class MainActivity extends AppCompatActivity implements CardViewHolderInt
         //getActionBar().setBackgroundDrawable(getResources().getDrawable(android.support.v7.appcompa));
         UserProfile user = userDatasource.get(position);
         popupImageHolder.showPopupWindow(user.getCon_img());
+    }
+
+    public void addNewItem(){
+        userDatasource.add(new UserProfile(R.drawable.usericon,"Som Oun" + i, "time : " + i, "today i'm stopid very stoped : " + i, R.drawable.img3, R.drawable.ic_thumb_up_black_18dp, "You and " + i + " friends liked", "1 commented and 2 shared"));
+        adapter.notifyItemInserted(userDatasource.size() - 1);
+        mRecyclerView.scrollToPosition(userDatasource.size() - 1);
+        //adapter.notifyDataSetChanged();
+        i++;
     }
 
     @Override
